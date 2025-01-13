@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +18,7 @@ public class EmployeeListDTO {
     private String workMailId;
     private String position;
     private String department;
-    private String dateJoined;
+    private LocalDate dateJoined;
 
     public EmployeeListDTO(Employee employee) {
         this.id= employee.getId();

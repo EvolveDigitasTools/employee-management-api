@@ -26,7 +26,7 @@ public class DocumentParsingController {
         String contentType= file.getContentType();
 
         if(file.isEmpty() || !"application/pdf".equals(contentType)) {
-            HashMap<String, Object> customResponse= new HashMap<>();
+                HashMap<String, Object> customResponse= new HashMap<>();
             customResponse.put("message","Invalid file format. Please upload a valid resume file.");
             return new ResponseEntity<>(customResponse, HttpStatus.BAD_REQUEST);
         }

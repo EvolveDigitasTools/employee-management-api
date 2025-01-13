@@ -1,8 +1,8 @@
 package com.evolvedigitas.employee_management_api.controller;
 
-import com.evolvedigitas.employee_management_api.dto.employee.EmployeeDTO;
-import com.evolvedigitas.employee_management_api.dto.employee.EmployeeDetailsDTO;
 import com.evolvedigitas.employee_management_api.dto.employee.EmployeeListDTO;
+import com.evolvedigitas.employee_management_api.dto.employee.EmployeeRequestDTO;
+import com.evolvedigitas.employee_management_api.dto.employee.EmployeeResponseDTO;
 import com.evolvedigitas.employee_management_api.model.Employee;
 import com.evolvedigitas.employee_management_api.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -30,14 +30,11 @@ public class EmployeeController {
         HashMap<String, Object> customResponse= new HashMap<>();
         if(emp.isPresent()) {
 
-            return new ResponseEntity<>(new EmployeeDetailsDTO(emp.get()), HttpStatus.OK);
-        } else if (emp.isEmpty()) {
+            return new ResponseEntity<>(new EmployeeResponseDTO(emp.get()), HttpStatus.OK);
+        } else {
             customResponse.put("message", "Employee not found");
             return new ResponseEntity<>(customResponse, HttpStatus.NOT_FOUND);
         }
-        customResponse.put("message", "Server error");
-        return new ResponseEntity<>(customResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     @GetMapping("/all-employees")
@@ -53,16 +50,11 @@ public class EmployeeController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> addEmployee(@ModelAttribute EmployeeDTO employeeDTO) throws IOException
+    public ResponseEntity<?> addEmployee(@ModelAttribute EmployeeRequestDTO employeeDTO) throws IOException
     {
         HashMap<String, Object> customResponse= new HashMap<>();
 
         Employee employee= employeeDTO.toUser();
-
-        if(employee.getAadharCard()==null || employee.getPanCard()==null || employee.getResume() ==null) {
-            customResponse.put("message","Invalid data. Please ensure all required fields are provided.");
-            return new ResponseEntity<>(customResponse, HttpStatus.BAD_REQUEST);
-        }
 
         Long employeeId= employeeService.addEmployee(employee);
         if(employeeId!=null) {

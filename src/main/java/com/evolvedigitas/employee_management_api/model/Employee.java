@@ -3,8 +3,8 @@ package com.evolvedigitas.employee_management_api.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -18,26 +18,25 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String name, email, phone, position, department, dateJoined;
+    private String name, email, phone, designation, department;
+    private LocalDate dateJoined;
 
     private List<String> skills;
-    private List<String> workExperience;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkExperience> workExperiences;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Education> education;
+
     private List<String> achievements;
 
-    @Lob
-    @Column(name = "resume")
-    private byte[] resume; // Stores file as binary
+    @OneToOne
+    private Document resume;
 
-    @Lob
-    @Column(name = "aadhar_card")
-    private byte[] aadharCard; // Stores file as binary
+    @OneToOne
+    private Document aadhaarCard; // Stores file as binary
 
-    @Lob
-    @Column(name = "pan_card")
-    private byte[] panCard; // Stores file as binary
-
-    private String education;
-
-
-
+    @OneToOne
+    private Document panCard; // Stores file as binary
 }

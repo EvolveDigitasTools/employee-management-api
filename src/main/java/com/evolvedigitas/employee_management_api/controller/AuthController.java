@@ -5,6 +5,7 @@ import com.evolvedigitas.employee_management_api.config.JWT.JwtTokenProvider;
 import com.evolvedigitas.employee_management_api.dto.LoginRequest;
 import com.evolvedigitas.employee_management_api.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         boolean isValid= authService.verifyUser(loginRequest);
         Map<String, Object> customResponse= new HashMap<>();
         if (isValid) {
